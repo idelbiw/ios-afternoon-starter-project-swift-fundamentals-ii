@@ -16,9 +16,40 @@ import UIKit
 //: e. Use a `String?` for the Terminal, since it may not be set yet (i.e.: waiting to arrive on time)
 //:
 //: f. Use a class to represent a `DepartureBoard` with a list of departure flights, and the current airport
+enum FlightStatus: String {
+    case scheduled = "Scheduled"
+    case delayed = "Delayed"
+    case departed = "Departed"
+    case inAir = "In Air"
+    case expected = "As Expected"
+    case diverted = "Diverted"
+    case landed = "Landed"
+    case arrived = "Arrived"
+    case cancelled = "Cancelled"
+    
+}
 
+struct Airport {
+    var name: String
+    
+}
 
+struct Flight {
+    var date: Date?
+    var terminal: Int?
+    var flightStatus: FlightStatus
+    
+}
 
+class DepoartureBoard {
+    var flights: [Flight]
+    var airport: Airport
+    
+    init(flights: [Flight], airport: Airport) {
+        self.flights = flights
+        self.airport = airport
+    }
+}
 //: ## 2. Create 3 flights and add them to a departure board
 //: a. For the departure time, use `Date()` for the current time
 //:
@@ -29,6 +60,17 @@ import UIKit
 //: d. Make one of the flights have a `nil` terminal because it has not been decided yet.
 //:
 //: e. Stretch: Look at the API for [`DateComponents`](https://developer.apple.com/documentation/foundation/datecomponents?language=objc) for creating a specific time
+let flight1 = Flight(date: Date(), terminal: 5, flightStatus: .landed)
+let flight2 = Flight(date: Date(), terminal: nil, flightStatus: .diverted)
+let flight3 = Flight(date: nil, terminal: nil, flightStatus: .cancelled)
+
+let myAirport = Airport(name: "My Airport")
+let myDepBoard = DepoartureBoard(flights: [], airport: myAirport)
+
+myDepBoard.flights.append(flight1)
+myDepBoard.flights.append(flight2)
+myDepBoard.flights.append(flight3)
+
 
 
 
@@ -40,6 +82,11 @@ import UIKit
 //: c. Make your `FlightStatus` enum conform to `String` so you can print the `rawValue` String values from the `enum`. See the [enum documentation](https://docs.swift.org/swift-book/LanguageGuide/Enumerations.html).
 //:
 //: d. Print out the current DepartureBoard you created using the function
+func printDepartures(departureBoard: DepoartureBoard) {
+    for (index, flight) in departureBoard.flights.enumerated() {
+        print("Flight \(index+1)  -  Date: \(flight.date ?? Date())  -  Terminal: \(flight.terminal ?? 000)  -  Flights Status: \(flight.flightStatus.rawValue)")
+    }
+}
 
 
 
@@ -99,3 +146,18 @@ import UIKit
 
 
 
+
+
+
+"""
+Welcome to My Airport
+Listed below are al the flights that we are running today
+
+Please keep in mind that:
+-If the termianl number says "000", it means that the flight was either Cancelled or Diverted
+-If you see today's date on the board, it means that the flight was either diverted, delayed, or cancelled
+-If you don't see the flight that you're looking for, then you probably forgot to append it to the array :D
+
+We sincerely hope that you enjoy your time at My Airport,
+Safe Travels!
+"""
